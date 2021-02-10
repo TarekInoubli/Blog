@@ -13,5 +13,8 @@
     <ProjectReference Include="..\Shared\BlazorBlog.Shared.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <watch Include="..\Client\**\*.razor"/>
+  </ItemGroup>
 
 </Project>
