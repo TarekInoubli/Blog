@@ -13,6 +13,11 @@ namespace BlazorBlog.Shared
         public int Id { get; set; }
 
         /// <summary>
+        /// Post url
+        /// </summary>
+        public string Url { get; set; }
+
+        /// <summary>
         /// The post title
         /// </summary>
         public string Title { get; set; }
