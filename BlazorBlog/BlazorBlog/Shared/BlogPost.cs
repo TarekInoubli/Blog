@@ -1,4 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.Runtime.CompilerServices;
+using System.Text;
 
 namespace BlazorBlog.Shared
 {
@@ -15,11 +19,18 @@ namespace BlazorBlog.Shared
         /// <summary>
         /// Post url
         /// </summary>
+        [Required, StringLength(20, ErrorMessage = "Please use only 20 characters.")]
         public string Url { get; set; }
+
+        /// <summary>
+        /// The post image
+        /// </summary>
+        public string Image { get; set; }
 
         /// <summary>
         /// The post title
         /// </summary>
+        [Required]
         public string Title { get; set; }
 
         /// <summary>

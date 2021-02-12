@@ -15,13 +15,20 @@ namespace BlazorBlog.Client.Services
         /// Get all blog posts.
         /// </summary>
         /// <returns></returns>
-        List<BlogPost> GetBlogPosts();
+        Task<List<BlogPost>> GetBlogPosts();
 
         /// <summary>
         /// Get a single blog post by url.
         /// </summary>
         /// <param name="url"></param>
         /// <returns></returns>
-        BlogPost GetBlogPostByUrl(string url);
+        Task<BlogPost> GetBlogPostByUrl(string url);
+
+        /// <summary>
+        /// Create a new blog post
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        Task<BlogPost> CreateNewBlogPost(BlogPost request);
     }
 }
