@@ -4,9 +4,9 @@ using System.ComponentModel.DataAnnotations;
 namespace BlazorBlog.Shared
 {
     /// <summary>
-    /// BlogPost model.
+    /// Strores the blog post information.
     /// </summary>
-    public class BlogPost
+    public class Post
     {
         /// <summary>
         /// The post id
@@ -31,19 +31,20 @@ namespace BlazorBlog.Shared
         public string Title { get; set; }
 
         /// <summary>
-        /// The post content
-        /// </summary>
-        public string Content { get; set; } = string.Empty;
-
-        /// <summary>
         /// The post description
         /// </summary>
         public string Description { get; set; }
 
         /// <summary>
-        /// The post author
+        /// The post content
         /// </summary>
-        public string Author { get; set; }
+        [Required]
+        public string Content { get; set; } = string.Empty;
+
+        /// <summary>
+        /// A list of comma-separated words categorizing the post.
+        /// </summary>
+        public string Tags { get; set; }
 
         /// <summary>
         /// The post datetime
@@ -59,5 +60,25 @@ namespace BlazorBlog.Shared
         /// Is the post already deleted?
         /// </summary>
         public bool IsDeleted { get; set; } = false;
+
+        /// <summary>
+        /// The post author id
+        /// </summary>
+        public int AuthorID { get; set; }
+
+        /// <summary>
+        /// Post category id
+        /// </summary>
+        public int CategoryID { get; set; }
+
+        /// <summary>
+        /// The post author
+        /// </summary>
+        public User Author { get; set; }
+
+        /// <summary>
+        /// Post category
+        /// </summary>
+        public Category Category { get; set; }
     }
 }

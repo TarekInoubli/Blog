@@ -31,10 +31,10 @@ namespace BlazorBlog.Client.Services
         /// </summary>
         /// <param name="request">the blog post to be created</param>
         /// <returns></returns>
-        public async Task<BlogPost> CreateNewBlogPost(BlogPost request)
+        public async Task<Post> CreateNewBlogPost(Post request)
         {
             var result = await _httpClient.PostAsJsonAsync("api/Blog", request);
-            return await result.Content.ReadFromJsonAsync<BlogPost>();
+            return await result.Content.ReadFromJsonAsync<Post>();
         }
 
         /// <summary>
@@ -42,19 +42,18 @@ namespace BlazorBlog.Client.Services
         /// </summary>
         /// <param name="url">the url</param>
         /// <returns></returns>
-        public async Task<BlogPost> GetBlogPostByUrl(string url)
+        public async Task<Post> GetBlogPostByUrl(string url)
         {
             var result = await _httpClient.GetAsync($"api/Blog/{url}");
 
             if (result.StatusCode != System.Net.HttpStatusCode.OK)
             {
                 var message = await result.Content.ReadAsStringAsync();
-                Console.WriteLine(message);
-                return new BlogPost { Title = message };
+                return new Post { Title = message };
             }
             else
             {
-                return await result.Content.ReadFromJsonAsync<BlogPost>();
+                return await result.Content.ReadFromJsonAsync<Post>();
             }
         }
 
@@ -62,10 +61,27 @@ namespace BlazorBlog.Client.Services
         /// Get all blog posts
         /// </summary>
         /// <returns></returns>
-        public async Task<List<BlogPost>> GetBlogPosts()
+        public async Task<List<Post>> GetBlogPosts()
         {
-            return await _httpClient.GetFromJsonAsync<List<BlogPost>>("api/Blog");
+            return await _httpClient.GetFromJsonAsync<List<Post>>("api/Blog");
         }
 
+        /// <summary>
+        /// Get post categories
+        /// </summary>
+        /// <returns></returns>
+        public async Task<List<Category>> GetCategories()
+        {
+            return await _httpClient.GetFromJsonAsync<List<Category>>("api/Categories");
+        }
+
+        /// <summary>
+        /// Get users
+        /// </summary>
+        /// <returns></returns>
+        public async Task<List<User>> GetUsers()
+        {
+            return await _httpClient.GetFromJsonAsync<List<User>>("api/Users");
+        }
     }
 }

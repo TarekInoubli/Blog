@@ -19,15 +19,15 @@ namespace BlazorBlog.Server.Controllers
         }
 
         [HttpGet]
-        public ActionResult<List<BlogPost>> GetAllBlogPosts()
+        public ActionResult<List<Post>> GetAllBlogPosts()
         {
-            return Ok(_context.BlogPosts.OrderByDescending(post => post.DateCreated));
+            return Ok(_context.Posts.OrderByDescending(post => post.DateCreated));
         }
 
         [HttpGet("{url}")]
-        public ActionResult<BlogPost> GetSingleBlogPost(string url)
+        public ActionResult<Post> GetSingleBlogPost(string url)
         {
-            var post = _context.BlogPosts.FirstOrDefault(p => p.Url.ToLower().Equals(url.ToLower()));
+            var post = _context.Posts.FirstOrDefault(p => p.Url.ToLower().Equals(url.ToLower()));
             if (post == null)
             {
                 return NotFound("This post does not exist.");
@@ -37,7 +37,7 @@ namespace BlazorBlog.Server.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<BlogPost>> CreateNewBlogPost(BlogPost request)
+        public async Task<ActionResult<Post>> CreateNewBlogPost(Post request)
         {
             _context.Add(request);
             await _context.SaveChangesAsync();

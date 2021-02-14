@@ -2,20 +2,21 @@
 @inject BlazorBlog.Client.Services.IBlogService BlogService
 @inject NavigationManager NavigationManager
 @using Markdig
+@using BlazorBlog.Shared 
 
 <h3>Create a New Blog Post</h3>
 
-<EditForm Model="@newBlogPost" OnValidSubmit="CreateNewBlogPost">
-    <DataAnnotationsValidator/>
+<EditForm Model="@newPost" OnValidSubmit="CreateNewBlogPost">
+    <DataAnnotationsValidator />
     <div class="form-group">
         <label for="title">Title</label>
-        <InputText id="title" @bind-Value="newBlogPost.Title" class="form-control" />
-        <ValidationMessage For="@(() => newBlogPost.Title)" />
+        <InputText id="title" @bind-Value="newPost.Title" class="form-control" />
+        <ValidationMessage For="@(() => newPost.Title)" />
     </div>
     <div class="form-group">
         <label for="url">Url</label>
-        <InputText id="url" @bind-Value="newBlogPost.Url" class="form-control" />
-        <ValidationMessage For="@(() => newBlogPost.Url)" />
+        <InputText id="url" @bind-Value="newPost.Url" class="form-control" />
+        <ValidationMessage For="@(() => newPost.Url)" />
     </div>
     <div class="form-control-file">
         <label for="image">Image</label>
@@ -23,33 +24,59 @@
     </div>
     <div class="form-group">
         <label for="description">Description</label>
-        <InputText id="description" @bind-Value="newBlogPost.Description" class="form-control" />
+        <InputText id="description" @bind-Value="newPost.Description" class="form-control" />
     </div>
     <div class="form-group">
         <label for="content">Content</label>
-        <BlogTextArea id="content" @bind-Value="newBlogPost.Content" class="form-control" />
+        <BlogTextArea id="content" @bind-Value="newPost.Content" class="form-control" />
     </div>
     <div class="form-group">
         <label for="contentPreview">Content Preview</label>
-        <div id="contentPreview" style="height: 100%;" class="form-control">@((MarkupString)Markdown.ToHtml(newBlogPost.Content))</div>
+        <div id="contentPreview" style="height: 100%;" class="form-control">@((MarkupString)Markdown.ToHtml(newPost.Content))</div>
     </div>
     <div class="form-group">
         <label for="date">Date</label>
-        <InputDate id="date" @bind-Value="newBlogPost.DateCreated" class="form-control" />
+        <InputDate id="date" @bind-Value="newPost.DateCreated" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label for="tags">Tags</label>
+        <InputText id="tags" @bind-Value="newPost.Tags" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label for="author">Author</label>
+        <InputSelect id="author" @bind-Value="newPost.AuthorID" class="form-control">
+            @foreach (var user in users)
+            {
+                <option value="@user.Id">@user.Username</option>
+            }
+        </InputSelect>
+    </div>
+    <div class="form-group">
+        <label for="category">Category</label>
+        <InputSelect id="category" @bind-Value="newPost.CategoryID" class="form-control">
+            @foreach (var cat in categories)
+            {
+                <option value="@cat.Id">@cat.Name</option>
+            }
+        </InputSelect>
     </div>
     <div class="form-check">
-        <InputCheckbox id="isPublished" @bind-Value="newBlogPost.IsPublished" class="form-check-input" />
+        <InputCheckbox id="isPublished" @bind-Value="newPost.IsPublished" class="form-check-input" />
         <label for="isPublished">Publish</label>
     </div>
     <button type="submit" class="btn btn-primary">Create</button>
 </EditForm>
 
 @code {
-    BlazorBlog.Shared.BlogPost newBlogPost = new BlazorBlog.Shared.BlogPost();
+    BlazorBlog.Shared.Post newPost = new BlazorBlog.Shared.Post();
+
+    private List<User> users = new List<User>();
+
+    private List<Category> categories = new List<Category>();
 
     async Task CreateNewBlogPost()
     {
-        var result = await BlogService.CreateNewBlogPost(newBlogPost);
+        var result = await BlogService.CreateNewBlogPost(newPost);
         NavigationManager.NavigateTo($"posts/{result.Url}");
     }
 
@@ -60,6 +87,12 @@
         var buffer = new byte[resizedImage.Size];
         await resizedImage.OpenReadStream().ReadAsync(buffer);
         var imageData = $"data:{format};base64,{Convert.ToBase64String(buffer)}";
-        newBlogPost.Image = imageData;
+        newPost.Image = imageData;
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        users = await BlogService.GetUsers();
+        categories = await BlogService.GetCategories();
     }
 }
