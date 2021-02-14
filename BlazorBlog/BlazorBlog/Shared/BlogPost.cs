@@ -36,7 +36,7 @@ namespace BlazorBlog.Shared
         /// <summary>
         /// The post content
         /// </summary>
-        public string Content { get; set; }
+        public string Content { get; set; } = string.Empty;
 
         /// <summary>
         /// The post description
