@@ -44,21 +44,21 @@
     </div>
     <div class="form-group">
         <label for="author">Author</label>
-        <InputSelect id="author" @bind-Value="newPost.AuthorID" class="form-control">
+        <select id="author" @bind="authorID" class="form-control">
             @foreach (var user in users)
             {
                 <option value="@user.Id">@user.Username</option>
             }
-        </InputSelect>
+        </select>
     </div>
     <div class="form-group">
         <label for="category">Category</label>
-        <InputSelect id="category" @bind-Value="newPost.CategoryID" class="form-control">
+        <select id="category" @bind="categoryID" class="form-control">
             @foreach (var cat in categories)
             {
                 <option value="@cat.Id">@cat.Name</option>
             }
-        </InputSelect>
+        </select>
     </div>
     <div class="form-check">
         <InputCheckbox id="isPublished" @bind-Value="newPost.IsPublished" class="form-check-input" />
@@ -68,6 +68,10 @@
 </EditForm>
 
 @code {
+
+    private int authorID = 1;
+    private int categoryID = 1;
+
     BlazorBlog.Shared.Post newPost = new BlazorBlog.Shared.Post();
 
     private List<User> users = new List<User>();
@@ -76,6 +80,9 @@
 
     async Task CreateNewBlogPost()
     {
+        newPost.AuthorID = authorID;
+        newPost.CategoryID = categoryID;
+
         var result = await BlogService.CreateNewBlogPost(newPost);
         NavigationManager.NavigateTo($"posts/{result.Url}");
     }
