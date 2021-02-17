@@ -33,9 +33,29 @@
         <AuthorizeView>
             <Authorized>
                 <li class="nav-item px-3">
-                    <NavLink class="nav-link" href="createpost">
-                        <span class="oi oi-plus" aria-hidden="true"></span> Create
+                    <NavLink class="nav-link" href="createpost" @onclick="()=>expandSubNav = !expandSubNav">
+                        <span class="oi oi-wrench" aria-hidden="true"></span>Settings
                     </NavLink>
+                    @if (expandSubNav)
+                     {
+                        <ul class="nav flex-column">
+                            <li class="nav-item px-3">
+                                <NavLink class="nav-link" href="createpost">
+                                    <span class="oi oi-justify-left" aria-hidden="true"></span> Posts
+                                </NavLink>
+                            </li>
+                            <li class="nav-item px-3">
+                                <NavLink class="nav-link" href="categories">
+                                    <span class="oi oi-justify-center" aria-hidden="true"></span> Categories
+                                </NavLink>
+                            </li>
+                            <li class="nav-item px-3">
+                                <NavLink class="nav-link" href="users">
+                                    <span class="oi oi-justify-right" aria-hidden="true"></span> Users
+                                </NavLink>
+                            </li>
+                        </ul>
+                     }
                 </li>
             </Authorized>
         </AuthorizeView>
@@ -59,6 +79,8 @@
 
 @code {
     private bool collapseNavMenu = true;
+
+    private bool expandSubNav;
 
     private string NavMenuCssClass => collapseNavMenu ? "collapse" : null;
 
